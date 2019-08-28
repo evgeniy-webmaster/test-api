@@ -1,0 +1,28 @@
+version: '3'
+services:
+  web:
+    image: phundament/nginx-one:1.9-5.1.1
+    environment:
+      - FASTCGI_PASS_HOST=php
+    ports:
+      - '80:80'
+    volumes:
+      - ./app:/app:delegated
+  php:
+    build:
+      dockerfile: Dockerfile-${DOCKERFILE_FLAVOUR}
+      context: 'php'
+      args:
+        - PHP_BASE_IMAGE_VERSION=${PHP_BASE_IMAGE_VERSION}
+    image: ${PHP_IMAGE_NAME}:${PHP_BASE_IMAGE_VERSION}${PHP_IMAGE_VERSION_SUFFIX}
+    environment:
+      - GITHUB_API_TOKEN=${GITHUB_API_TOKEN}
+      - PHP_ENABLE_XDEBUG
+    volumes:
+      - ./app:/app:delegated
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: yii2basic
+      MYSQL_ROOT_PASSWORD: dbpass

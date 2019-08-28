@@ -22,7 +22,8 @@ services:
       - ./app:/app:delegated
   db:
     image: mariadb
-    restart: always
+    ports:
+      - '3306:3306'
     environment:
       MYSQL_DATABASE: yii2basic
       MYSQL_ROOT_PASSWORD: dbpass

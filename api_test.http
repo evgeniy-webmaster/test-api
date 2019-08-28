@@ -1,0 +1,15 @@
+POST http://admin:admin@localhost/lead/create
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{ "name": "sdgfjhlkjfgj", "source_id": 345, "status": "test" }
+
+###
+
+GET http://admin:admin@localhost/leads?status=test&created_by=100&offset=0
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+###

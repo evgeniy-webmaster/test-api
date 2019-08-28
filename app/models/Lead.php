@@ -2,7 +2,8 @@
 
 namespace app\models;
 
-use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "leads".
@@ -16,6 +17,22 @@ use Yii;
  */
 class Lead extends \yii\db\ActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => false,
+            ],
+            [
+                'class' => BlameableBehavior::class,
+                'createdByAttribute' => 'created_by',
+                'updatedByAttribute' => false,
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,8 +47,7 @@ class Lead extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['source_id', 'created_at', 'created_by'], 'integer'],
-            [['created_at', 'created_by'], 'required'],
+            [['source_id'], 'integer'],
             [['name', 'status'], 'string', 'max' => 255],
         ];
     }
